@@ -4,107 +4,263 @@ An end-to-end Hotel Booking Analytics data engineering project built on Databric
 
 ## Table of Contents
 1.Business Problem
-2.Architecture
-Pipeline Lineage
-Tech Stack
-Dataset
-Repository Structure
-Layer Details
-Data Quality Rules
-Reconciliation
-Dashboard
-How to Run
-Business Requirements Coverage
-Key Learnings
-Future Improvements
+
+2.Tech Stack
+
+3.Dataset
+
+4.Repository Structure
+
+5.Layer Details
+
+6.Dashboard
+
+7.How to Run
+
+8.Key Learnings
+
+9.Future Improvements
+
 
 ## 1. Business Problem
 A hotel group manages bookings across multiple hotels and cities. However, raw booking data contains several quality issues, including inconsistent text formatting, missing values, duplicate bookings, invalid stay dates and negative room rates.
 These problems make it difficult for business managers to generate reliable reports about hotel performance, booking trends, revenue, room types and payment methods.
 Goal: Build a repeatable data engineering pipeline that preserves the original booking data, cleans and validates records, creates business-ready Gold tables and provides insights through an interactive dashboard.
 
-2. Architecture
+## 2. Tech Stac
+Azure Databricks
 
-The project follows the Medallion Architecture:
+Lakeflow Spark Declarative Pipelines
 
-Raw CSV → Bronze → Silver → Gold → Dashboard
+Databricks SQL
 
-Layer
+Unity Catalog
 
-Purpose
+Unity Catalog Volumes
 
-Key Actions
+Delta Lake
 
-Bronze
+Databricks AI/BI Dashboards
 
-Preserve source data
+Genie Code
 
-Load CSV, retain raw records and add ingestion metadata
+Medallion Architecture
 
-Silver
+## 3. Dataset
 
-Improve data quality
+Dataset: hotel_bookings_raw.csv
 
-Remove duplicates, standardize text, handle missing values and validate records
+Dataset Type: Synthetic Hotel Booking Dataset
 
-Gold
+Records: 1,316 rows
 
-Business analytics
+Columns: 20 source columns
 
-Generate hotel, city, monthly booking and payment summaries
+The dataset contains hotel booking information covering booking dates, check-in and check-out dates, hotel details, guest information, room types, booking channels, room rates, discounts, payment details and booking status.
 
-Dashboard
+## 4. Repository Structure
 
-Visualize insights
+hotel-booking-analytics-databricks/
+│
+├── README.md
+│
+├── ETL_Pipeline/
+│   │
+│   ├── bronze_hotel_bookings_layer/
+│   │   └── Bronze_transformations/
+│   │       └── bronze_hotel_bookings.sql
+│   │
+│   ├── silver_hotel_bookings_layer/
+│   │   └── Silver_transformations/
+│   │       └── silver_bookings.sql
+│   │
+│   └── gold_hotel_bookings_layer/
+│       └── Gold_transformations/
+│           └── gold_booking_analytics.sql
+│
+├── Images/
+│   ├── architecture.png
+│   ├── bronze_pipeline.png
+│   ├── silver_pipeline.png
+│   ├── gold_pipeline.png
+│   └── hotel_booking_dashboard.png
+│
+├── data/
+│
+└── docs/
+    ├── project_overview.md
+    ├── data_quality_rules.md
+    └── reconciliation.md
 
-Display KPIs, revenue trends and booking performance
+## 5. Layer Details
 
-3. Pipeline Lineage
+Bronze Layer – Raw Data Ingestion
 
-Object
+The Bronze Layer is responsible for ingesting the original hotel booking CSV file into Databricks.
 
-Type
+## Key Activities:
 
-Description
+Read CSV data from a Unity Catalog Volume.
+
+Use Auto Loader for data ingestion.
+
+Preserve the original source records.
+
+Add source filename metadata.
+
+Capture data loading timestamp.
+
+# Bronze Table:
 
 bronze_hotel_bookings
 
-Streaming table
+# Source Path:
 
-Raw hotel booking records
+/Volumes/hospitality_catalog/bookings/raw_files/
+
+Silver Layer – Data Cleaning and Validation
+
+The Silver Layer transforms raw booking records into clean and validated datasets.
+
+# Key Activities:
+
+Remove duplicate booking records.
+
+Trim unnecessary spaces.
+
+Standardize text using INITCAP and TRIM.
+
+Replace missing city values with Unknown.
+
+Calculate missing nights using DATEDIFF.
+
+Calculate missing total amounts using nights × room_rate.
+
+Identify invalid stay dates.
+
+Identify negative room rates.
+
+Separate valid and rejected booking records.
+
+# Silver Tables:
 
 silver_bookings_clean
 
-Materialized view
-
-Cleaned and validated booking records
-
 silver_bookings_rejected
 
-Materialized view
+Gold Layer – Business Analytics
 
-Invalid booking records with rejection reasons
+The Gold Layer creates analytical datasets for business reporting and dashboard development.
 
-gold_hotel_revenue
+# Gold Tables:
 
-Materialized view
+1. gold_hotel_revenue
 
-Hotel-wise revenue analysis
+Provides hotel-wise booking and revenue analysis.
 
-gold_city_performance
+2. gold_city_performance
 
-Materialized view
+Provides city-wise booking performance and guest analysis.
 
-City-wise booking performance
+3. gold_booking_trends
 
-gold_booking_trends
+Provides monthly booking trends and revenue summaries.
 
-Materialized view
+4. gold_payment_analysis
 
-Monthly booking trends
+Provides payment method and payment status analysis.
 
-gold_payment_analysis
+## 6. Dashboard
 
-Materialized view
+An interactive Hotel Booking Analytics Dashboard was developed and published using Databricks AI/BI Dashboard and Genie Code.
 
-Payment method analysis
+Key Performance Indicators
+
+Total Bookings
+
+Total Revenue
+
+Average Booking Amount
+
+Total Unique Hotels
+
+Dashboard Visualizations
+
+Hotel-wise Revenue Analysis
+
+City-wise Booking Performance
+
+Monthly Booking Trends
+
+Payment Method Analysis
+
+Booking Status Analysis
+
+Dashboard Preview
+
+# Live Dashboard:[ Add your published Databricks dashboard URL here.
+](https://dbc-3de1915a-69f2.cloud.databricks.com/dashboardsv3/01f1d9ebb3cb19d6a189a7427ae19b75/published?o=7474652173141518)
+
+## 7. How to Run
+
+Open your Databricks workspace.
+
+Create or select a Unity Catalog.
+
+Create a schema and Volume.
+
+Upload hotel_bookings_raw.csv into the Volume.
+
+Create a new Lakeflow Spark Declarative Pipeline.
+
+Set the default catalog to hospitality_catalog.
+
+Set the default schema to bookings.
+
+Add the Bronze, Silver and Gold SQL transformation files.
+
+Run the pipeline and verify successful execution.
+
+Validate record counts and reconciliation results.
+
+Query the Gold tables.
+
+Build and publish the Databricks AI/BI dashboard.
+
+## 8.Key Learnings
+
+Understanding Medallion Architecture.
+
+Working with Unity Catalog and Volumes.
+
+Building declarative ETL pipelines using SQL.
+
+Performing data cleaning and validation.
+
+Handling duplicate and rejected records.
+
+Implementing data reconciliation.
+
+Creating business-ready analytical tables.
+
+Building interactive dashboards using Databricks AI/BI and Genie Code.
+
+## 9. Future Improvements
+
+Integrate additional hotel booking data sources.
+
+Implement automated data-quality monitoring.
+
+Improve pipeline error handling and alerting.
+
+Add hotel occupancy and room availability analytics.
+
+Develop advanced customer segmentation.
+
+Add interactive dashboard filters.
+
+Implement scheduled pipeline refreshes.
+
+## 10. License
+
+Add a suitable open-source license if you intend to distribute this project under one. Otherwise, leave the repository without a license.
