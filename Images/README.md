@@ -5,21 +5,25 @@ An end-to-end Hotel Booking Analytics data engineering project built on Databric
 ## Table of Contents
 1.Business Problem
 
-2.Tech Stack
+2.Objectives
 
-3.Dataset
+3.Project Architecture
 
-4.Repository Structure
+4.Tech Stack
 
-5.Layer Details
+5.Dataset
 
-6.Dashboard
+6.Repository Structure
 
-7.How to Run
+7.Layer Details
 
-8.Key Learnings
+8.Dashboard
 
-9.Future Improvements
+9.How to Run
+
+10.Key Learnings
+
+11.Future Improvements
 
 
 ## 1. Business Problem
@@ -27,7 +31,35 @@ A hotel group manages bookings across multiple hotels and cities. However, raw b
 These problems make it difficult for business managers to generate reliable reports about hotel performance, booking trends, revenue, room types and payment methods.
 Goal: Build a repeatable data engineering pipeline that preserves the original booking data, cleans and validates records, creates business-ready Gold tables and provides insights through an interactive dashboard.
 
-## 2. Tech Stac
+## 2.Objectives
+- Build a data pipeline to process raw hotel booking data.
+- Clean data and remove duplicate records.
+- Identify and separate invalid records.
+- Create analytical datasets for business insights.
+- Visualize booking information through an interactive dashboard.
+
+## 3.Project Architecture – Medallion Architecture
+Your Hotel Booking Analytics project uses Medallion Architecture, which has three layers: Bronze, Silver, and Gold.
+# 1. Bronze Layer – Raw Data
+- The Bronze layer is the first layer of the data pipeline.
+- It collects raw hotel booking data from the CSV file.
+- The original data is stored in Databricks without major transformations.
+- It acts as the starting point for further processing.
+In simple words: Bronze stores the original hotel booking data.
+# 2. Silver Layer – Cleaned Data
+- The Silver layer processes the data received from the Bronze layer.
+- It removes duplicate booking records.
+- It cleans and standardizes data.
+- It identifies invalid records and separates them into a rejected table.
+- It prepares reliable data for analysis.
+In simple words: Silver cleans the raw data and makes it ready for analysis.
+# 3. Gold Layer – Business-Ready Data
+- The Gold layer receives cleaned data from the Silver layer.
+- It creates analytical summary tables.
+- It provides insights into hotel revenue, city performance, booking trends, and payment analysis.
+- These tables are used for business reporting and dashboards.
+
+## 4. Tech Stack
 Azure Databricks
 
 Lakeflow Spark Declarative Pipelines
@@ -46,7 +78,7 @@ Genie Code
 
 Medallion Architecture
 
-## 3. Dataset
+## 5. Dataset
 
 Dataset: hotel_bookings_raw.csv
 
@@ -58,7 +90,7 @@ Columns: 20 source columns
 
 The dataset contains hotel booking information covering booking dates, check-in and check-out dates, hotel details, guest information, room types, booking channels, room rates, discounts, payment details and booking status.
 
-## 4. Repository Structure
+## 6. Repository Structure
 
 hotel-booking-analytics-databricks/
 │
@@ -92,7 +124,7 @@ hotel-booking-analytics-databricks/
     ├── data_quality_rules.md
     └── reconciliation.md
 
-## 5. Layer Details
+## 7. Layer Details
 
 Bronze Layer – Raw Data Ingestion
 
@@ -170,7 +202,7 @@ Provides monthly booking trends and revenue summaries.
 
 Provides payment method and payment status analysis.
 
-## 6. Dashboard
+## 8. Dashboard
 
 An interactive Hotel Booking Analytics Dashboard was developed and published using Databricks AI/BI Dashboard and Genie Code.
 
@@ -201,7 +233,7 @@ Dashboard Preview
 # Live Dashboard:[ Add your published Databricks dashboard URL here.
 ](https://dbc-3de1915a-69f2.cloud.databricks.com/dashboardsv3/01f1d9ebb3cb19d6a189a7427ae19b75/published?o=7474652173141518)
 
-## 7. How to Run
+## 9. How to Run
 
 Open your Databricks workspace.
 
@@ -227,7 +259,7 @@ Query the Gold tables.
 
 Build and publish the Databricks AI/BI dashboard.
 
-## 8.Key Learnings
+## 10.Key Learnings
 
 Understanding Medallion Architecture.
 
@@ -245,7 +277,7 @@ Creating business-ready analytical tables.
 
 Building interactive dashboards using Databricks AI/BI and Genie Code.
 
-## 9. Future Improvements
+## 11. Future Improvements
 
 Integrate additional hotel booking data sources.
 
@@ -261,6 +293,6 @@ Add interactive dashboard filters.
 
 Implement scheduled pipeline refreshes.
 
-## 10. License
+## License
 
 Add a suitable open-source license if you intend to distribute this project under one. Otherwise, leave the repository without a license.
